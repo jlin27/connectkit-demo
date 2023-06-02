@@ -1,7 +1,33 @@
-import '../styles/globals.css'
+import { WagmiConfig, createConfig } from "wagmi";
+import {
+  ConnectKitProvider,
+  ConnectKitButton,
+  getDefaultConfig,
+} from "connectkit";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+const config = createConfig(
+  getDefaultConfig({
+    // Required API Keys
+    alchemyId: process.env.ALCHEMY_ID, // or infuraId
+    walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID,
 
-export default MyApp
+    // Required
+    appName: "Your App Name",
+
+    // Optional
+    appDescription: "Your App Description",
+    appUrl: "https://family.co", // your app's url
+    appLogo: "https://family.co/logo.png", // your app's logo,no bigger than 1024x1024px (max. 1MB)
+  })
+);
+
+const App = () => {
+  return (
+    <WagmiConfig config={config}>
+      <ConnectKitProvider>
+        /* Your App */
+        <ConnectKitButton />
+      </ConnectKitProvider>
+    </WagmiConfig>
+  );
+};
